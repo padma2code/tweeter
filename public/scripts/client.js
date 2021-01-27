@@ -3,8 +3,10 @@
  * jQuery is already loaded
  * Reminder: Use (and do all your DOM work in) jQuery's document ready function
  */
-//from initial-tweets.json file
-const data = [
+
+
+ // Test / driver code (temporary). Eventually will get this from the server.
+ const data = [
     {
       "user": {
         "name": "Newton",
@@ -65,5 +67,26 @@ const data = [
   
   $(document).ready(function() {
     renderTweets(data);
+  
+    $("form").on("submit", function() {
+      event.preventDefault();
+      console.log('Performing AJAX request...')
+      const $data = $(this).serialize()
+      $.ajax({
+        url: '/tweets',
+        method: 'POST',
+        data: $data
+      })
+        .done( (data) => {
+          console.log('Success!');
+          console.log(data);
+        })
+        .fail( (err) => {
+          console.log("Error:", err);
+        })
+        .always( () => {
+          console.log("Done!")
+        });
+    });
   });
   
