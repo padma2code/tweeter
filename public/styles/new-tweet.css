@@ -2,7 +2,6 @@ form {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  margin-bottom: 3em;
 }
 
 textarea {
@@ -15,6 +14,7 @@ textarea {
   margin-bottom: .5em;
   color: #545149;
   height: 50px;
+  outline: none;
 }
 
 input {
