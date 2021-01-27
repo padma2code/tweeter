@@ -1,10 +1,16 @@
-header{
-    height: 400px;
-    width:auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: #1493ce;
-    background-image: url("https://www.transparenttextures.com/patterns/45-degree-fabric-dark.png");
-  }
+
+.your-account {
+  height: 400px;
+  position: absolute;
+  top: 120px;
+  left: 0;
+  right: 0;
+  background-color: #9de4e9;
+  background-image: url("https://www.transparenttextures.com/patterns/asfalt-dark.png");
+  text-align: center;
+}
+
+.your-account h2 {
+  position: relative;
+  bottom: 30px;
+}
