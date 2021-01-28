@@ -13,8 +13,10 @@ nav {
  }
 
  nav #logo {
-  font-family: 'Bungee', cursive, sans-serif;
+   font-family: 'Bungee', cursive, sans-serif;
  }
+
+ 
 
  .new-msg {
    height: 60px;
