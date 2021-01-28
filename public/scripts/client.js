@@ -10,7 +10,7 @@
     div.appendChild(document.createTextNode(str));
     return div.innerHTML;
   }
-  
+  //render tweets in array
   const renderTweets = function(tweets) {
     if (Array.isArray(tweets)) {
       return tweets.forEach(tweet => {

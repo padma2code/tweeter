@@ -3,6 +3,7 @@
   <head>
     <!-- Meta Information -->
     <title>Tweeter - Home Page</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0' />
 
     <!-- External CSS -->
     <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
@@ -21,6 +22,7 @@
     <!-- App JS -->
     <script type="text/javascript" src="/scripts/client.js"></script>
     <script type="text/javascript" src="/scripts/composer-char-counter.js"></script>
+    <script type="text/javascript" src="/scripts/composer.js"></script>
   </head>
 
   <body>
@@ -28,7 +30,7 @@
     <nav>
       <div id="logo">
         <img id="bird" src="images/logo-bird.png">
-         tweeter
+        <span id="tweeter">tweeter</span>
       </div>
       <div class="new-msg">
         <span><strong>Write</strong> a new tweet</span>
@@ -48,18 +50,20 @@
 
     <main class="container">
       <section class="new-tweet">
+        <div class="error-message">
+          <img src="/images/warning.png">
+          <span><strong></strong></span>
+        </div>
         <form action="/tweets" method="POST">
           <textarea name="text" placeholder="What are you humming about?"></textarea>
           <input type="submit" value="Tweet">
           <span class="counter">140</span>
         </form>
       </section>
-      <div class="error-message">
-        <img src="/images/warning.png">
-        <span><strong></strong></span>
-      </div>
+
       <section id="tweets-container">
       </section>
-       </main>
+      <button type="button"><img src="/images/arrows-up.png"></button>
+    </main>
   </body>
 </html>

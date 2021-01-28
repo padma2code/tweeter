@@ -1,11 +1,10 @@
 
 .your-account {
   height: 400px;
-  position: absolute;
   top: 120px;
   left: 0;
   right: 0;
-  background-color: #9de4e9;
+  background-color: #6fc22b;
   background-image: url("https://www.transparenttextures.com/patterns/asfalt-dark.png");
   text-align: center;
 }
