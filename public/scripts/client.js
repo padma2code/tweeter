@@ -4,13 +4,19 @@
  * jQuery is already loaded
  * Reminder: Use (and do all your DOM work in) jQuery's document ready function
  */
-//function to render all objects in Array
-const renderTweets = function(tweets) {
+//preventing XSS with escape function
+const escape =  function(str) {
+    let div = document.createElement('div');
+    div.appendChild(document.createTextNode(str));
+    return div.innerHTML;
+  }
+  // function to render tweets
+  const renderTweets = function(tweets) {
     return tweets.forEach(tweet => {
-      $('#tweets-container').append(createTweetElement(tweet));
+      $('#tweets-container').prepend(createTweetElement(tweet));
     });
   };
-  //function to create HTMl article dynamically
+  //function to create HTML article dynamically
   const createTweetElement = function(tweetObj) {
     const element = `
       <article class="tweet">
@@ -22,7 +28,7 @@ const renderTweets = function(tweets) {
         <span class="handle">${tweetObj.user.handle}</span>
       </header>
       <div class="content">
-          ${tweetObj.content.text}
+          ${escape(tweetObj.content.text)}
       </div>
       <footer>
         <span class="date">
@@ -38,7 +44,7 @@ const renderTweets = function(tweets) {
     `;
     return element;
   }
-  //function to load tweets from server using Ajax
+  //function to load tweets from server
   const loadTweets = (url, method, cb) => {
     $.ajax({
       url,
@@ -54,7 +60,13 @@ const renderTweets = function(tweets) {
         console.log("Tweets loaded!");
       });
   };
-  // function to validate form submission
+  //function for refreshing page
+  const refreshPage = () => {
+    $('textarea').val('');
+    $('.counter').text(140);
+    loadTweets("/tweets", "GET", renderTweets);
+  };
+  //function for form validation
   const submitHandler = (text) => {
     if (!text) {
       return alert("Your tweet is empty");
@@ -70,6 +82,7 @@ const renderTweets = function(tweets) {
       })
         .done( () => {
           console.log('Success!');
+          refreshPage();
         })
         .fail( (err) => {
           console.log("Error:", err);
