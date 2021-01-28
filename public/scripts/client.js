@@ -4,19 +4,23 @@
  * jQuery is already loaded
  * Reminder: Use (and do all your DOM work in) jQuery's document ready function
  */
-//preventing XSS with escape function
-const escape =  function(str) {
+    //function to prevent XSS attack 
+    const escape =  function(str) {
     let div = document.createElement('div');
     div.appendChild(document.createTextNode(str));
     return div.innerHTML;
   }
-  // function to render tweets
+  
   const renderTweets = function(tweets) {
-    return tweets.forEach(tweet => {
-      $('#tweets-container').prepend(createTweetElement(tweet));
-    });
+    if (Array.isArray(tweets)) {
+      return tweets.forEach(tweet => {
+        $('#tweets-container').prepend(createTweetElement(tweet));
+      });
+    } else {
+      return $('#tweets-container').prepend(createTweetElement(tweets));
+    };
   };
-  //function to create HTML article dynamically
+  // create the tweet HTML
   const createTweetElement = function(tweetObj) {
     const element = `
       <article class="tweet">
@@ -44,7 +48,7 @@ const escape =  function(str) {
     `;
     return element;
   }
-  //function to load tweets from server
+  // adds tweets to HTML page
   const loadTweets = (url, method, cb) => {
     $.ajax({
       url,
@@ -60,18 +64,38 @@ const escape =  function(str) {
         console.log("Tweets loaded!");
       });
   };
-  //function for refreshing page
+  //add submitted tweet to HTML page
+  const loadNewTweet = (url, method, cb) => {
+    $.ajax({
+      url,
+      method,
+    })
+      .done(data => {
+        cb(data[data.length - 1]);
+      })
+      .fail(err => {
+        console.log('Error:', err)
+      })
+      .always( () => {
+        console.log("Tweets loaded!");
+      });
+  };
+  //resetting the form
   const refreshPage = () => {
     $('textarea').val('');
     $('.counter').text(140);
-    loadTweets("/tweets", "GET", renderTweets);
+    loadNewTweet("/tweets", "GET", renderTweets);
   };
-  //function for form validation
+  //function to check tweet is empty/too long
   const submitHandler = (text) => {
     if (!text) {
-      return alert("Your tweet is empty");
+      $('.error-message').slideDown();
+      $('.error-message strong').text("Your tweet is empty")
+      return;
     } else if (text.length > 140) {
-      return alert(`Your tweet is too long: ${text.length} characters`)
+      $('.error-message').slideDown();
+      $('.error-message strong').text(`Your tweet is too long: ${text.length} characters`);
+      return;
     } else {
       $.ajax({
         url: '/tweets',
@@ -95,11 +119,20 @@ const escape =  function(str) {
   
   $(document).ready(function() {
     loadTweets("/tweets", "GET", renderTweets);
+    $(".error-message").hide();
+    $(".new-tweet").hide();
   
     $("form").on("submit", function() {
       event.preventDefault();
+      $(".error-message").slideUp();
       console.log('Performing AJAX request...');
-      // submitHandler($(this).serialize());
       submitHandler($('textarea').val());
     });
+  
+    $("nav button").on("click", () => {
+      $(".new-tweet").slideToggle();
+      $(".error-message").slideUp();
+      $("textarea").focus();
+    });
+  
   });

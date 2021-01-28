@@ -18,7 +18,7 @@
     <!-- External JS -->
     <script type="text/javascript" src="/vendor/jquery-2.2.3.min.js"></script>
 
-    <!-- client JS -->
+    <!-- App JS -->
     <script type="text/javascript" src="/scripts/client.js"></script>
     <script type="text/javascript" src="/scripts/composer-char-counter.js"></script>
   </head>
@@ -29,17 +29,17 @@
       <span id="logo">tweeter</span>
       <div class="new-msg">
         <span><strong>Write</strong> a new tweet</span>
-        <img src="/images/arrows-down.png">
+        <button type="button"><img src="/images/arrows-down.png"></button>
       </div>
     </nav>
 
     <header class="your-account">
         <div>
-            <img src="/images/profile-hex.png"> 
+          <img src="/images/profile-hex.png"> 
         </div>
         <br>
         <div>
-            <h2>Padma</h2>
+          <h2>Padma</h2>
         </div>
     </header>
 
@@ -51,7 +51,10 @@
           <span class="counter">140</span>
         </form>
       </section>
-
+      <div class="error-message">
+        <img src="/images/warning.png">
+        <span><strong></strong></span>
+      </div>
       <section id="tweets-container">
       </section>
     </main>
