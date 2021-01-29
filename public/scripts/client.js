@@ -20,34 +20,56 @@
       return $('#tweets-container').prepend(createTweetElement(tweets));
     };
   };
-  // create the tweet HTML
-  const createTweetElement = function(tweetObj) {
-    const element = `
-      <article class="tweet">
-      <header>
-        <div class="wrapper">
-          <img src=${tweetObj.user.avatars} />
-          <span class="name">${tweetObj.user.name}</span>
-        </div>
-        <span class="handle">${tweetObj.user.handle}</span>
-      </header>
-      <div class="content">
-          ${escape(tweetObj.content.text)}
+  // Create the tweet and its HTML
+const createTweetElement = function(tweetObj) {
+  const dateOfTweet = new Date(tweetObj.created_at);
+  
+  const timeSinceTweet = () => {
+    const now = new Date();
+    const msInDay = 24 * 60 * 60 * 1000;
+    const diffInDay = (now - dateOfTweet) / msInDay;
+    const diffInHours = diffInDay * 24;
+    const diffInMinutes = diffInHours * 60;
+    if (Math.floor(diffInHours) === 0) {		
+      return `${Math.floor(diffInMinutes)} minutes`;		
+    } else if (Math.floor(diffInDay / 365) === 0) {
+      return `${Math.floor(diffInHours)} hours`;
+    } else if (diffInDay < 31) {
+      return `${Math.floor(diffInDay / 365)} days`;
+    } else if (diffInDay <= 365) {
+      return `${Math.floor(diffInDay / 31)} months`;
+    } else {
+      return `${Math.floor(diffInDay / 365)} years`;
+    }
+  };
+
+  const element = `
+    <article class="tweet">
+    <header>
+      <div class="wrapper">
+        <img src=${tweetObj.user.avatars} />
+        <span class="name">${tweetObj.user.name}</span>
       </div>
-      <footer>
-        <span class="date">
-        ${tweetObj.created_at}
-        </span>
-        <div class="actions">
-          <img src="/images/flag.png">
-          <img src="/images/retweet-symbol.png">
-          <img src="/images/like-symbol.png">
-        </div>
-      </footer>
-      </article>
-    `;
-    return element;
-  }
+      <span class="handle">${tweetObj.user.handle}</span>
+    </header>
+    <div class="content">
+        ${escape(tweetObj.content.text)}
+    </div>
+    <footer>
+      <span class="date">
+      ${timeSinceTweet()} ago
+      </span>
+      <div class="actions">
+        <img src="/images/flag.png">
+        <img src="/images/retweet-symbol.png">
+        <img src="/images/like-symbol.png">
+      </div>
+    </footer>
+    </article>
+  `;
+  return element;
+};
+
   // adds tweets to HTML page
   const loadTweets = (url, method, cb) => {
     $.ajax({
@@ -128,7 +150,7 @@
       console.log('Performing AJAX request...');
       submitHandler($('textarea').val());
     });
-  
+  // implemented the behaviour of backtotop button
     $("nav button").on("click", () => {
       $(".new-tweet").slideToggle();
       $(".error-message").slideUp();
